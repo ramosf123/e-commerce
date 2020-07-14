@@ -3,9 +3,10 @@ import React, { Component } from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
-import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
+import { signUpStart } from "../../redux/user/user.actions";
 
 import { SignUpContainer, SignUpTitle } from "./sign-up.styles";
+import { connect } from "react-redux";
 
 class SignUp extends Component {
   state = {
@@ -18,29 +19,14 @@ class SignUp extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
+    const { signUpStart } = this.props;
 
     if (password !== confirmPassword) {
       alert("passwords don't match");
       return;
     }
 
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-
-      await createUserProfileDocument(user, { displayName });
-
-      this.setState({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    signUpStart({ email, password, displayName });
   };
 
   handleChange = (e) => {
@@ -96,4 +82,8 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (userCreds) => dispatch(signUpStart(userCreds)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);
