@@ -17,6 +17,21 @@ export const CollectionItemContainer = styled.div`
       display: flex;
     }
   }
+  @media screen and (max-width: 800px) {
+    width: 40vw;
+
+    &:hover {
+      .image {
+        opacity: unset;
+      }
+      button {
+        opacity: unset;
+      }
+    }
+  }
+  @media screen and (max-width: 350px) {
+    width: 100%;
+  }
 `;
 
 export const AddButton = styled(CustomButton)`
@@ -25,6 +40,12 @@ export const AddButton = styled(CustomButton)`
   position: absolute;
   top: 255px;
   display: none;
+  @media screen and (max-width: 800px) {
+    display: block;
+    opacity: 0.9;
+    min-width: unset;
+    padding: 0 10px;
+  }
 `;
 
 export const BackgroundImage = styled.div`
@@ -38,9 +59,9 @@ export const BackgroundImage = styled.div`
 
 export const CollectionFooterContainer = styled.div`
   width: 100%;
-  height: 5%;
+  height: 10%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   font-size: 18px;
 `;
 
@@ -51,4 +72,7 @@ export const NameContainer = styled.span`
 
 export const PriceContainer = styled.span`
   width: 10%;
+  @media screen and (max-width: 800px) {
+    width: 20%;
+  }
 `;
