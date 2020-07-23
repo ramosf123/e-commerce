@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 const compression = require("compression");
+const enforce = require("express-sslify");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
@@ -18,6 +19,8 @@ app.use(compression());
 app.use(cors());
 
 if (process.env.NODE_ENV === "production") {
+  app.use(enforce.HTTPS({ trustProvidier: true }));
+
   app.use(express.static(path.join(__dirname, "client/build")));
 
   app.get("*", function (req, res) {
@@ -44,4 +47,8 @@ app.post("/payment", (req, res) => {
       res.status(200).send({ success: stripeRes });
     }
   });
+});
+
+app.get("./service-worker.js", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client/build", "service-worker.js"));
 });
